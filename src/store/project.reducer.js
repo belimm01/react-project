@@ -7,7 +7,7 @@ let initialState = {
 export const projectReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCHED_PROJECT:
-            return [...state.projects, ...action.payload]
+            return {...state, projects: action.payload}
         default:
             return state
     }

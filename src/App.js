@@ -1,10 +1,11 @@
 import React from "react";
 import ProjectList from "./component/ProjectList";
+import AppBar from "./component/AppBar";
 
 function App() {
     return (
-        <div className="wrapper">
-            <h1>Test React Project</h1>
+        <div>
+            <AppBar/>
             <ProjectList/>
         </div>
     );
