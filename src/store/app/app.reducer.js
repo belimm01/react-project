@@ -1,4 +1,4 @@
-import {HIDE_LOADER, SHOW_LOADER} from "./project.types";
+import {HIDE_LOADER, SHOW_LOADER} from "../project/project.types";
 
 let initialState = {
     isLoader: false

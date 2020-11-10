@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getProjects} from "../store/project.action";
-import Loader from "./AppLoader";
+import {getProjects} from "../../store/project/project.action";
+import Loader from "../app/AppLoader";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
@@ -10,11 +10,21 @@ import TableBody from "@material-ui/core/TableBody";
 import ProjectItem from "./ProjectItem";
 import Paper from "@material-ui/core/Paper";
 import StyledTableCell from "./StyledTableCell";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+const useStyles = makeStyles((theme) => ({
+    table: {
+        width: "95%",
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+}));
 
 function ProjectList() {
     const dispatch = useDispatch();
     const projects = useSelector(state => state.project.projects);
     const isLoader = useSelector(state => state.app.isLoader);
+    const classes = useStyles();
 
     useEffect(() => {
         dispatch(getProjects())
@@ -29,7 +39,7 @@ function ProjectList() {
     }
 
     return (
-        <TableContainer style={{width: "95%", marginLeft: "auto", marginRight: "auto"}} component={Paper}>
+        <TableContainer className={classes.table} component={Paper}>
             <Table aria-label="customized table">
                 <TableHead>
                     <TableRow>

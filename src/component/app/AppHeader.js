@@ -18,14 +18,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-export default () => {
+export default function AppHeader() {
     const classes = useStyles();
     return (
-        <div  className={classes.root}>
+        <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
+                    <Typography variant="h6" className={classes.title}>
                         React-redux test project
                     </Typography>
                 </Toolbar>

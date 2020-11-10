@@ -1,12 +1,13 @@
 import React from "react";
-import ProjectList from "./component/ProjectList";
-import AppBar from "./component/AppBar";
+import AppHeader from "./component/app/AppHeader";
+import Router from "./router/router";
+
 
 function App() {
     return (
         <div>
-            <AppBar/>
-            <ProjectList/>
+            <AppHeader/>
+            <Router/>
         </div>
     );
 }
