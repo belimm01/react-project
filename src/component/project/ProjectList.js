@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getProjects} from "../../store/project/project.action";
 import Loader from "../app/AppLoader";
@@ -11,12 +11,39 @@ import ProjectItem from "./ProjectItem";
 import Paper from "@material-ui/core/Paper";
 import StyledTableCell from "./StyledTableCell";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import ProjectBar from "./ProjectBar";
+import ProjectPagination from "./ProjectPagination";
 
 const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginBottom: theme.spacing(2),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+    },
     table: {
-        width: "95%",
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+    },
+    root: {
+        padding: '2px 4px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: theme.spacing(2),
+    },
+    input: {
+        margin: theme.spacing(1),
+        flex: 1,
+    },
+    iconButton: {
+        padding: 10,
+    },
+    divider: {
+        height: 28,
+        margin: theme.spacing(2),
+    },
+    space: {
+        margin: theme.spacing(2),
     },
 }));
 
@@ -25,41 +52,59 @@ function ProjectList() {
     const projects = useSelector(state => state.project.projects);
     const isLoader = useSelector(state => state.app.isLoader);
     const classes = useStyles();
+    const [filtered, setFiltered] = useState([]);
+    let tableHeaders = {};
 
     useEffect(() => {
-        dispatch(getProjects())
+        if (!projects.length) {
+            dispatch(getProjects())
+        }
     }, [dispatch])
 
-    if (isLoader) {
+    useEffect(() => {
+        setFiltered(projects);
+    }, [projects])
+
+    if (filtered) {
+        tableHeaders = {...filtered[0]};
+    }
+
+    if (!filtered.length || isLoader) {
         return <Loader/>
     }
 
-    if (!projects.length) {
-        return <p>No data was found!!!</p>
+    const handleFilteredList = (filtered) => {
+        setFiltered(filtered);
     }
 
     return (
-        <TableContainer className={classes.table} component={Paper}>
-            <Table aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell align="right">Source&nbsp;Language</StyledTableCell>
-                        <StyledTableCell align="right">Status</StyledTableCell>
-                        <StyledTableCell align="right">Date due</StyledTableCell>
-                        <StyledTableCell align="right">Date created</StyledTableCell>
-                        <StyledTableCell align="right">Action</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {projects.map(project => {
-                        return (
-                            <ProjectItem project={project} key={project.id}/>
-                        )
-                    })}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div>
+            <ProjectBar onFilteredChange={handleFilteredList} projects={projects}/>
+            <Paper elevation={5} className={classes.paper}>
+                <TableContainer className={classes.table}>
+                    <Table aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                {
+                                    Object.keys(tableHeaders).map((key, index) => {
+                                        return <StyledTableCell key={index}>{key}</StyledTableCell>
+                                    })
+                                }
+                                <StyledTableCell align="right">Action</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filtered.map(project => {
+                                return (
+                                    <ProjectItem project={project} key={project.id}/>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {filtered.length < 5 ? <div/> : <ProjectPagination projects={filtered}/>}
+            </Paper>
+        </div>
     )
 }
 

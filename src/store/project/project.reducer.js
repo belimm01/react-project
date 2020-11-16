@@ -1,8 +1,8 @@
-import {FETCHED_PROJECT, FETCHED_ALL_PROJECTS} from "./project.types";
+import {FETCHED_PROJECT, FETCHED_ALL_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT, SAVE_PROJECT} from "./project.types";
 
 let initialState = {
     projects: [],
-    currentProject: []
+    currentProject: {}
 };
 
 export const projectReducer = (state = initialState, action) => {
@@ -11,6 +11,18 @@ export const projectReducer = (state = initialState, action) => {
             return {...state, projects: action.payload}
         case FETCHED_PROJECT:
             return {...state, currentProject: action.payload}
+        case DELETE_PROJECT:
+            state.currentProject = {}
+            return {...state, projects: state.projects.filter(project => project.id !== action.payload)}
+        case UPDATE_PROJECT:
+            return {
+                ...state, projects: state.projects.map(project =>
+                    (project.id === action.payload.id) ?
+                        {...project, ...action.payload} : project
+                )
+            }
+        case SAVE_PROJECT:
+            return {...state, projects: [...state.projects, action.payload]}
         default:
             return state
     }

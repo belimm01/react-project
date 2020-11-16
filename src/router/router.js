@@ -9,8 +9,8 @@ export default function Router() {
             <BrowserRouter>
                 <Switch>
                     <Route exact path="/" component={ProjectList}/>
-                    {/*<BrowserRouter exact path="/project" component={ProjectItemDetail}/>*/}
-                    <Route path="/project/:projectId" component={ProjectItemForm}/>
+                    <Route exact path="/project/create" component={ProjectItemForm}/>
+                    <Route exact path="/project/:projectId" component={ProjectItemForm}/>
                 </Switch>
             </BrowserRouter>
         </div>

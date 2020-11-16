@@ -13,17 +13,12 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-
 function ProjectItem({project}) {
     return (
         <StyledTableRow key={project.id}>
-            <StyledTableCell component="th" scope="row">
-                {project.name}
-            </StyledTableCell>
-            <StyledTableCell align="right">{project.sourceLanguage.toUpperCase()}</StyledTableCell>
-            <StyledTableCell align="right">{project.status}</StyledTableCell>
-            <StyledTableCell align="right">{project.dateCreated}</StyledTableCell>
-            <StyledTableCell align="right">{project.dateDue}</StyledTableCell>
+            {Object.values(project).map((value, index) => {
+                return <StyledTableCell key={index}>{value}</StyledTableCell>
+            })}
             <StyledTableCell align="right">
                 <ButtonGroup project={project} key={project.id}/>
             </StyledTableCell>
