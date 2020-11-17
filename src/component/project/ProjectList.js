@@ -13,6 +13,7 @@ import StyledTableCell from "./StyledTableCell";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ProjectBar from "./ProjectBar";
 import ProjectPagination from "./ProjectPagination";
+import _ from 'lodash'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -49,11 +50,18 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectList() {
     const dispatch = useDispatch();
+    const classes = useStyles();
+
     const projects = useSelector(state => state.project.projects);
     const isLoader = useSelector(state => state.app.isLoader);
-    const classes = useStyles();
-    const [filtered, setFiltered] = useState([]);
-    let tableHeaders = {};
+
+    const [tableHeaders, setTableHeaders] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [projectsPerPage] = useState(5);
+    const [currentProjects, setCurrentProjects] = useState([]);
+
+    const indexOfLastPost = currentPage * projectsPerPage;
+    const indexOfFirstPost = indexOfLastPost - projectsPerPage;
 
     useEffect(() => {
         if (!projects.length) {
@@ -62,19 +70,21 @@ function ProjectList() {
     }, [dispatch])
 
     useEffect(() => {
-        setFiltered(projects);
-    }, [projects])
+        setCurrentProjects(projects.slice(indexOfFirstPost, indexOfLastPost));
+    }, [projects, currentPage])
 
-    if (filtered) {
-        tableHeaders = {...filtered[0]};
+    if (currentProjects !== 'undefined' && !_.isEmpty(currentProjects) && _.isEmpty(tableHeaders)) {
+        setTableHeaders({...currentProjects[0]});
     }
 
-    if (!filtered.length || isLoader) {
+    if (!currentProjects.length || isLoader) {
         return <Loader/>
     }
 
+    const page = pageNumber => setCurrentPage(pageNumber);
+
     const handleFilteredList = (filtered) => {
-        setFiltered(filtered);
+        setCurrentProjects(filtered.slice(indexOfFirstPost, indexOfLastPost));
     }
 
     return (
@@ -94,7 +104,7 @@ function ProjectList() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filtered.map(project => {
+                            {currentProjects.map(project => {
                                 return (
                                     <ProjectItem project={project} key={project.id}/>
                                 )
@@ -102,7 +112,10 @@ function ProjectList() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {filtered.length < 5 ? <div/> : <ProjectPagination projects={filtered}/>}
+                <ProjectPagination projectsPerPage={projectsPerPage}
+                                   totalProjects={projects.length}
+                                   currentPage={currentPage}
+                                   page={page}/>
             </Paper>
         </div>
     )
