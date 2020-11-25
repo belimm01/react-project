@@ -21,6 +21,7 @@ import {RootState} from "../../store/root.reducer";
 import {ProjectModel} from "../../model/ProjectModel";
 import {createStyles, Theme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import Input from '@material-ui/core/Input';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,8 +40,37 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(1),
             minWidth: 160,
         },
+        chip: {
+            margin: 2,
+        },
+        chips: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
     })
 );
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const languages = [
+    'ru',
+    'en',
+    'cz',
+    'ua',
+    'pl',
+    'de',
+    'cs',
+    'fi',
+];
 
 export const ProjectItemForm = () => {
     const initialState: ProjectModel = {
@@ -48,7 +78,7 @@ export const ProjectItemForm = () => {
         name: '',
         sourceLanguage: '',
         status: '',
-        targetLanguages: '',
+        targetLanguages: [''],
         dateDue: ''
     };
     const [project, setProject] = useState<ProjectModel>(initialState);
@@ -107,7 +137,7 @@ export const ProjectItemForm = () => {
                         <form noValidate autoComplete="off">
                             <div>
                                 <TextField
-                                    required={true}
+                                    required
                                     label="Name"
                                     name='name'
                                     onChange={handleInputChange}
@@ -115,11 +145,11 @@ export const ProjectItemForm = () => {
                                     className={classes.textField}
                                     value={project.name}/>
                                 <TextField
-                                    required={true}
+                                    required
                                     label="Source Language"
                                     name='sourceLanguage'
                                     onChange={handleInputChange}
-                                    id="input-project-source-language"
+                                    id="input-project-source-language-id"
                                     className={classes.textField}
                                     value={project.sourceLanguage}/>
                             </div>
@@ -127,11 +157,11 @@ export const ProjectItemForm = () => {
                                 <FormControl className={classes.formControl}>
                                     <InputLabel id="Status">Status</InputLabel>
                                     <Select
-                                        required={true}
+                                        required
                                         labelId="Status"
                                         name='status'
                                         label="Status"
-                                        id="input-project-status"
+                                        id="input-project-status-id"
                                         value={project.status}
                                         onChange={handleInputChange}>
                                         <MenuItem value={"NEW"}>NEW</MenuItem>
@@ -139,20 +169,30 @@ export const ProjectItemForm = () => {
                                         <MenuItem value={"DELIVERED"}>DELIVERED</MenuItem>
                                     </Select>
                                 </FormControl>
-                                <TextField
-                                    required={true}
-                                    label="Target Languages"
-                                    name='targetLanguages'
-                                    onChange={handleInputChange}
-                                    id="input-project-target-language"
-                                    className={classes.textField}
-                                    value={project.targetLanguages}
-                                    helperText="Example: pl, ru, de"/>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel id="target-languages-label-id">Target Languages</InputLabel>
+                                    <Select
+                                        labelId="target-languages-label-id"
+                                        id="input-project-target-language-id"
+                                        multiple
+                                        name='targetLanguages'
+                                        value={project.targetLanguages}
+                                        onChange={handleInputChange}
+                                        input={<Input/>}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {languages.map((language: string) => (
+                                            <MenuItem key={language} value={language}>
+                                                {language}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </div>
                             <div>
                                 <TextField
-                                    required={true}
-                                    id="input-project-date-due"
+                                    required
+                                    id="input-project-date-due-id"
                                     label="Date due"
                                     name='dateDue'
                                     onChange={handleInputChange}

@@ -7,7 +7,7 @@ const transformData = (project: ProjectModel) => {
         status: (project.status) ? project.status : "",
         sourceLanguage: (project.sourceLanguage) ? project.sourceLanguage : "",
         dateDue: (project.dateDue) ? new Date(project.dateDue).toISOString() : "",
-        targetLanguages: (project.targetLanguages?.length) ? project.targetLanguages : ""
+        targetLanguages: (project.targetLanguages.length && project.targetLanguages.length !== 0) ? project.targetLanguages : []
     }
 }
 

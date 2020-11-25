@@ -4,5 +4,5 @@ export interface ProjectModel{
     status: string,
     sourceLanguage: string,
     dateDue: string,
-    targetLanguages: string,
+    targetLanguages: string[],
 }
