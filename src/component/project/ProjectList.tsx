@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getProjects} from "../../store/project/project.action";
-import Loader from "../app/AppLoader";
+import {AppLoader} from "../app/AppLoader";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
@@ -11,11 +11,14 @@ import ProjectItem from "./ProjectItem";
 import Paper from "@material-ui/core/Paper";
 import StyledTableCell from "./StyledTableCell";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import ProjectBar from "./ProjectBar";
-import ProjectPagination from "./ProjectPagination";
+import {ProjectBar} from "./ProjectBar";
+import {ProjectPagination} from "./ProjectPagination";
 import _ from 'lodash'
+import {ProjectModel} from "../../model/ProjectModel";
+import {RootState} from "../../store/root.reducer";
+import {Theme} from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         marginBottom: theme.spacing(2),
         marginLeft: theme.spacing(2),
@@ -48,17 +51,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProjectList() {
+export const ProjectList = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const projects = useSelector(state => state.project.projects);
-    const isLoader = useSelector(state => state.app.isLoader);
+    const projects = useSelector((state: RootState) => state.project.projects);
+    const isLoader = useSelector((state: RootState) => state.app.isLoader);
 
     const [tableHeaders, setTableHeaders] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [projectsPerPage] = useState(5);
-    const [currentProjects, setCurrentProjects] = useState([]);
+    const [currentProjects, setCurrentProjects] = useState<ProjectModel[]>([]);
 
     const indexOfLastPost = currentPage * projectsPerPage;
     const indexOfFirstPost = indexOfLastPost - projectsPerPage;
@@ -73,17 +76,17 @@ function ProjectList() {
         setCurrentProjects(projects.slice(indexOfFirstPost, indexOfLastPost));
     }, [projects, currentPage])
 
-    if (currentProjects !== 'undefined' && !_.isEmpty(currentProjects) && _.isEmpty(tableHeaders)) {
+    if (!_.isEmpty(currentProjects) && _.isEmpty(tableHeaders)) {
         setTableHeaders({...currentProjects[0]});
     }
 
     if (!currentProjects.length || isLoader) {
-        return <Loader/>
+        return <AppLoader/>
     }
 
-    const page = pageNumber => setCurrentPage(pageNumber);
+    const page = (pageNumber: number) => setCurrentPage(pageNumber);
 
-    const handleFilteredList = (filtered) => {
+    const handleFilteredList = (filtered: ProjectModel[]) => {
         setCurrentProjects(filtered.slice(indexOfFirstPost, indexOfLastPost));
     }
 

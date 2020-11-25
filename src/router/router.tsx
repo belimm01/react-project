@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Switch,} from "react-router-dom";
 import React from "react";
 import ProjectList from "../component/project/ProjectList";
-import ProjectItemForm from "../component/project/ProjectItemForm";
+import {ProjectItemForm} from "../component/project/ProjectItemForm";
 
 export default function Router() {
     return (

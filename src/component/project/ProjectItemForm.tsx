@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Link, useParams} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getProjectById, saveProject, updateProject} from "../../store/project/project.action";
 import CardActions from "@material-ui/core/CardActions";
@@ -18,28 +17,33 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import {FETCHED_PROJECT} from "../../store/project/project.types";
 import _ from 'lodash'
-import {useHistory} from "react-router-dom";
+import {RootState} from "../../store/root.reducer";
+import {ProjectModel} from "../../model/ProjectModel";
+import {createStyles, Theme} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-    center: {
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        margin: theme.spacing(1),
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 160,
-    },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        center: {
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        textField: {
+            margin: theme.spacing(1),
+        },
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 160,
+        },
+    })
+);
 
-function ProjectItemForm() {
-    const initialState = {
+export const ProjectItemForm = () => {
+    const initialState: ProjectModel = {
         id: '',
         name: '',
         sourceLanguage: '',
@@ -47,13 +51,14 @@ function ProjectItemForm() {
         targetLanguages: '',
         dateDue: ''
     };
-    const [project, setProject] = useState(initialState);
+    const [project, setProject] = useState<ProjectModel>(initialState);
     const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
 
-    let fetchedProject = useSelector(state => state.project.currentProject);
-    let {projectId} = useParams();
+    let fetchedProject = useSelector((state: RootState) => state.project.currentProject);
+    // @ts-ignore
+    const {projectId} = useParams();
 
     useEffect(() => {
         if (projectId) {
@@ -69,7 +74,7 @@ function ProjectItemForm() {
         }
     }, [fetchedProject])
 
-    const handleInputChange = e => {
+    const handleInputChange = (e: any) => {
         const {name, value} = e.target
         setProject({...project, [name]: value})
     }
@@ -84,9 +89,6 @@ function ProjectItemForm() {
 
         //set dateDue in correct format
         Object.assign(project, {dateDue: new Date(project.dateDue).toISOString()});
-
-        //set targetLanguages in correct format
-        if (_.isString(project.targetLanguages)) Object.assign(project, {targetLanguages: project.targetLanguages.split()});
 
         project.id ? dispatch(updateProject(project)) : dispatch(saveProject(project));
 
@@ -170,7 +172,6 @@ function ProjectItemForm() {
                             variant="contained"
                             size="small"
                             onClick={resetState}
-                            className={classes.button}
                             startIcon={<Backspace/>}>
                             Back
                         </Button>
@@ -181,7 +182,6 @@ function ProjectItemForm() {
                         color="primary"
                         size="small"
                         type="submit"
-                        className={classes.button}
                         startIcon={<SaveIcon/>}>
                         Save
                     </Button>
@@ -190,5 +190,3 @@ function ProjectItemForm() {
         </div>
     )
 }
-
-export default ProjectItemForm

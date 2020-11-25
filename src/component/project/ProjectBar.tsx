@@ -7,40 +7,43 @@ import AddIcon from "@material-ui/icons/Add";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import {ProjectModel} from "../../model/ProjectModel";
+import {createStyles, Theme} from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-    table: {
-        width: "95%",
-        marginLeft: "auto",
-        marginRight: "auto"
-    },
-    root: {
-        padding: '2px 4px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: theme.spacing(2),
-    },
-    input: {
-        margin: theme.spacing(1),
-        flex: 1,
-    },
-    iconButton: {
-        padding: 10,
-    },
-    divider: {
-        height: 28,
-        margin: theme.spacing(2),
-    },
-    space: {
-        margin: theme.spacing(2),
-    },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        table: {
+            width: "95%",
+            marginLeft: "auto",
+            marginRight: "auto"
+        },
+        root: {
+            padding: '2px 4px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: theme.spacing(2),
+        },
+        input: {
+            margin: theme.spacing(1),
+            flex: 1,
+        },
+        iconButton: {
+            padding: 10,
+        },
+        divider: {
+            height: 28,
+            margin: theme.spacing(2),
+        },
+        space: {
+            margin: theme.spacing(2),
+        },
+    }));
 
-function ProjectBar(props) {
+export const ProjectBar = (props: { projects: ProjectModel[], onFilteredChange(value: ProjectModel[]): void }) => {
     const classes = useStyles();
 
-    const handleInputChange = e => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value.toLowerCase();
         const result = props.projects.filter(project => project.name.toLowerCase().includes(input));
         props.onFilteredChange(result);
@@ -67,5 +70,3 @@ function ProjectBar(props) {
         </div>
     )
 }
-
-export default (ProjectBar);

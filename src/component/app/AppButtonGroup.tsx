@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {deleteProjectById} from "../../store/project/project.action";
 import Fab from "@material-ui/core/Fab";
+import {ProjectModel} from "../../model/ProjectModel";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,17 +17,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AppButtonGroup({project}) {
+export const AppButtonGroup = (props: { project: ProjectModel }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const deleteProject = () => {
-        dispatch(deleteProjectById(project.id))
+        dispatch(deleteProjectById(props.project.id))
     }
 
     return (
         <div className={classes.root}>
-            <Link to={`/project/${project.id}`}>
+            <Link to={`/project/${props.project.id}`}>
                 <Fab size="small" color="primary" aria-label="edit">
                     <EditIcon/>
                 </Fab>

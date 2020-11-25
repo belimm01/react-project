@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AppHeader() {
+export const AppHeader = () => {
     const classes = useStyles();
     return (
         <div className={classes.root}>

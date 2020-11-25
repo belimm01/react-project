@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AppLoader() {
+export const AppLoader = () => {
     const classes = useStyles();
     return (
         <div className={classes.root}>

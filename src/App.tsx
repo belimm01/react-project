@@ -1,5 +1,5 @@
 import React from "react";
-import AppHeader from "./component/app/AppHeader";
+import {AppHeader} from "./component/app/AppHeader";
 import Router from "./router/router";
 
 
