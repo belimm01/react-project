@@ -66,7 +66,6 @@ export const ProjectList = () => {
   const indexOfLastPost = currentPage * projectsPerPage;
   const indexOfFirstPost = indexOfLastPost - projectsPerPage;
 
-  // Fetch only on first mount; projects.length guards a redundant request.
   useEffect(() => {
     if (!projects.length) {
       dispatch(getProjects());
@@ -74,7 +73,6 @@ export const ProjectList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  // Re-slice the visible page when the data or page changes.
   useEffect(() => {
     setCurrentProjects(projects.slice(indexOfFirstPost, indexOfLastPost));
     // eslint-disable-next-line react-hooks/exhaustive-deps
