@@ -1,6 +1,6 @@
 import React from 'react';
 import TableRow from '@material-ui/core/TableRow';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import StyledTableCell from './StyledTableCell';
 import { AppButtonGroup } from '../app/AppButtonGroup';
 import { ProjectModel } from '../../model/ProjectModel';
