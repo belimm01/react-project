@@ -10,7 +10,7 @@ import TableBody from '@material-ui/core/TableBody';
 import ProjectItem from './ProjectItem';
 import Paper from '@material-ui/core/Paper';
 import StyledTableCell from './StyledTableCell';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import { ProjectBar } from './ProjectBar';
 import { ProjectPagination } from './ProjectPagination';
 import _ from 'lodash';
