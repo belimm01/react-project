@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import TableCell from '@material-ui/core/TableCell';
 import { Theme } from '@material-ui/core';
 
