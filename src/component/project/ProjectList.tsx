@@ -66,8 +66,7 @@ export const ProjectList = () => {
   const indexOfLastPost = currentPage * projectsPerPage;
   const indexOfFirstPost = indexOfLastPost - projectsPerPage;
 
-  // Fetch once on mount; `projects.length` is read only to skip a redundant
-  // initial request and must not re-trigger the effect.
+  // Fetch only on first mount; projects.length guards a redundant request.
   useEffect(() => {
     if (!projects.length) {
       dispatch(getProjects());
@@ -75,8 +74,7 @@ export const ProjectList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  // Re-slice the visible page whenever the data set or page changes; the
-  // slice bounds are derived from `currentPage` and are intentionally omitted.
+  // Re-slice the visible page when the data or page changes.
   useEffect(() => {
     setCurrentProjects(projects.slice(indexOfFirstPost, indexOfLastPost));
     // eslint-disable-next-line react-hooks/exhaustive-deps

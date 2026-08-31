@@ -119,7 +119,6 @@ export const ProjectItemForm = () => {
     const { name, sourceLanguage, targetLanguages, dateDue } = project;
     if (!name || !sourceLanguage || !targetLanguages || !dateDue) return;
 
-    //set dateDue in correct format
     Object.assign(project, {
       dateDue: new Date(project.dateDue).toISOString(),
     });
