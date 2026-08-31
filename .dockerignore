@@ -1,0 +1,14 @@
+node_modules
+build
+dist
+coverage
+.git
+.github
+.idea
+.env
+.env.*
+!.env.example
+*.local
+npm-debug.log*
+Dockerfile
+.dockerignore
